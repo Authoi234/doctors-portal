@@ -3,12 +3,17 @@ import React from 'react';
 const Review = ({ review }) => {
     const { name, review: userReview, img, location } = review;
     return (
-        <div className="card w-96 bg-base-100 shadow-xl">
+        <div className="card shadow-xl">
             <div className="card-body">
-                <h2 className="card-title">Card title!</h2>
-                <p>If a dog chews shoes whose shoes does he choose?</p>
-                <div className="card-actions justify-end">
-                    <button className="btn btn-primary">Buy Now</button>
+                <p>{userReview}</p>
+                <div className="flex items-center mt-5">
+                    <div className="avatar mr-6">
+                        <div className="w-16 rounded-full ring ring-primary ring-offset-base-100 ring-offset-2">
+                            <img src={img} alt='' />
+                        </div>
+                    </div>
+                    <h5 className="text-lg">{name}</h5>
+                    <p>{location}</p>
                 </div>
             </div>
         </div>

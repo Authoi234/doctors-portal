@@ -40,7 +40,7 @@ const Reviews = () => {
                     <img className='w-2/3' src={quote} alt="" />
                 </div>
             </div>
-            <div className='mt-20'>
+            <div className='mt-20 grid lg:grid-cols-3 md:grid-cols-2 sm:grid-cols-1'>
                 {
                     reviews.map(review => <Review key={review._id} review={review}></Review>)
                 }
