@@ -3,6 +3,7 @@ import Banner from '../Banner/Banner';
 import ContactArea from '../ContactArea/ContactArea';
 import Services from '../Services/Services';
 import DantalCareSection from '../DantalCareSection/DantalCareSection';
+import MakeAppointment from '../MakeAppointment/MakeAppointment';
 
 const Home = () => {
     return (
@@ -11,6 +12,7 @@ const Home = () => {
             <ContactArea></ContactArea>
             <Services></Services>
             <DantalCareSection></DantalCareSection>
+            <MakeAppointment></MakeAppointment>
         </div>
     );
 };
