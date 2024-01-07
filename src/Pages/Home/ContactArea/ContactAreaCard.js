@@ -1,6 +1,4 @@
 import React from 'react';
-import clockImg from "../../../assets/icons/clock.svg"
-
 const ContactAreaCard = ({ card }) => {
     const { icon, discription, name, bgClass } = card
     return (
