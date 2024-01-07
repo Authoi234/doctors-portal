@@ -11,6 +11,7 @@ const AppointmentOption = ({ appointmentOption }) => {
                 <p>{slots.length} {slots.length > 1 ? 'spaces' : 'space'} Available</p>
                 <div className="card-actions justify-center">
                     <PrimaryButton>Book Appointment</PrimaryButton>
+                    <label htmlFor="booking-modal" className="btn">open modal</label>
                 </div>
             </div>
         </div>
