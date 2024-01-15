@@ -33,11 +33,11 @@ const BookingModal = ({treatment, setTreatment, selectedDate}) => {
             <input type="checkbox" id="booking-modal" className="modal-toggle" />
             <div className="modal">
                 <div className="modal-box relative">
-                    <label htmlFor='booking-modal' className="btn btn-sm btn-circle btn-accent hover:scale-110 active:scale-75 absolute right-2 top-2">✕</label>
+                    <label htmlFor='booking-modal' className="btn btn-sm btn-circle btn-neutral hover:scale-110 active:scale-75 absolute right-2 top-2">✕</label>
                     <h3 className="text-lg font-bold">{name}</h3>
                     <form onSubmit={handleSubmit} className='grid grid-cols-1 gap-3'>
                         <input type="text" value={date} className="input w-full text-black input-bordered" disabled />
-                        <select name='slot' className="select select-bordered w-full bg-[#E6E6E6]">
+                        <select name='slot' className="select select-bordered w-full bg-base-100">
                             <option>Who shot first?</option>
                             {
                                 slots.map((slot, i) => <option value={slot} key={i}>{slot}</option>)
@@ -47,7 +47,7 @@ const BookingModal = ({treatment, setTreatment, selectedDate}) => {
                         <input name='email' type="email" placeholder="Email Address" className="input input-bordered w-full" />
                         <input name='phone' type="text" placeholder="Phone Number" className="input input-bordered w-full" />
                         <br />
-                        <input htmlFor="booking-modal" className='btn btn-accent w-full' type="submit" value="Submit" />
+                        <input htmlFor="booking-modal" className='btn btn-neutral w-full' type="submit" value="Submit" />
                     </form>
                 </div>
             </div>

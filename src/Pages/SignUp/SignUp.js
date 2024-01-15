@@ -1,14 +1,15 @@
 import React, { useContext, useState } from 'react';
 import { useForm } from 'react-hook-form';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { AuthContext } from '../../contexts/AuthProvider';
 import toast from 'react-hot-toast';
 
 const SignUp = () => {
 
-    const { createUser, updateUser } = useContext(AuthContext);
+    const { createUser, updateUser, loginWithGoogle } = useContext(AuthContext);
     const { register, handleSubmit, formState: { errors } } = useForm();
-    const [error, setError] = useState('')
+    const [error, setError] = useState('');
+    const navigate = useNavigate();
 
     const handleSignUp = (data) => {
         setError('')
@@ -24,6 +25,7 @@ const SignUp = () => {
                     },
                 });
                 handleUpdateUserProfile(data.name);
+                navigate('/');
             })
             .catch(err => {
                 setError(err);
@@ -37,6 +39,18 @@ const SignUp = () => {
         updateUser(profile)
             .then(() => { })
             .catch((err) => setError(err))
+    }
+
+    const handleGoogleLogin = () => {
+        setError('');
+
+        loginWithGoogle()
+        .then(result => {
+            const user = result.user;
+            console.log(user);
+            navigate('/');
+        })
+        .catch(err => setError(err));
     }
 
     return (
@@ -78,14 +92,14 @@ const SignUp = () => {
                         />
                         {errors.password && <p className='text-red-500 font-bold'>{errors.password?.message}</p>}
                     </label>
-                    <input className='btn btn-accent w-full my-3' type="submit" />
+                    <input className='btn btn-neutral w-full my-3' type="submit" />
                     <div>
                         {error && <p className="text-red-500">{error}</p>}
                     </div>
                 </form>
-                <p className='my-2 text-sm'>Already Have an Account ? <Link className='text-secondary' to={'/login'}>Please Login</Link></p>
+                <p className='my-2 text-sm'>Already Have an Account ? <Link className='text-emerald-400' to={'/login'}>Please Login</Link></p>
                 <div className="divider">OR</div>
-                <button className='btn btn-outline btn-accent w-full'>CONTINUE WITH GOOGLE</button>
+                <button className='btn btn-outline btn-neutral w-full' onClick={handleGoogleLogin}>CONTINUE WITH GOOGLE</button>
             </div>
         </div>
     );

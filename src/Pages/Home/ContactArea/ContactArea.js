@@ -11,21 +11,21 @@ const ContactArea = () => {
             name: 'Opening Hours',
             discription: 'Opens 9.00 pm to 5.30 pm everyday',
             icon: clockImg,
-            bgClass: 'bg-gradient-to-r from-secondary to-primary'
+            bgClass: 'bg-gradient-to-r from-emerald-400 to-teal-300'
         },
         {
             id: 2,
             name: 'Visit our location',
             discription: 'Brooklyn, NY 10036, United States',
             icon: locationImg,
-            bgClass: 'bg-accent'
+            bgClass: 'bg-neutral'
         },
         {
             id: 3,
             name: 'Contact us',
             discription: '+000 123 456789',
             icon: phoneImg,
-            bgClass: 'bg-gradient-to-r from-secondary to-primary'
+            bgClass: 'bg-gradient-to-r from-emerald-400 to-teal-300'
         },
     ]
     return (

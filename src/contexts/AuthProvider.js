@@ -1,9 +1,10 @@
 import React, { createContext, useEffect, useState } from 'react';
-import { createUserWithEmailAndPassword, getAuth, onAuthStateChanged, signInWithEmailAndPassword, signOut, updateProfile } from 'firebase/auth';
+import { GoogleAuthProvider, createUserWithEmailAndPassword, getAuth, onAuthStateChanged, sendPasswordResetEmail, signInWithEmailAndPassword, signInWithPopup, signOut, updateProfile } from 'firebase/auth';
 import app from './../firebase/firebase.config';
 
 export const AuthContext = createContext();
-const auth = getAuth(app)
+const auth = getAuth(app);
+const googleProvider = new GoogleAuthProvider();
 
 const AuthProvider = ({children}) => {
     const [user, setUser] = useState(null); 
@@ -12,6 +13,11 @@ const AuthProvider = ({children}) => {
     const createUser = (email, password) => {
         setLoading(true);
         return createUserWithEmailAndPassword(auth, email, password);
+    }
+
+    const loginWithGoogle = () => {
+        setLoading(true);
+        return signInWithPopup(auth, googleProvider);
     }
 
     const signInUser = (email, password) => {
@@ -28,6 +34,10 @@ const AuthProvider = ({children}) => {
         return updateProfile(auth.currentUser, userInfo);
     }
 
+    const sendForgetPasswordEmail = (email) => {
+        return sendPasswordResetEmail(auth, email);
+    }
+
     useEffect(() => {
         const unsubscribe =  onAuthStateChanged(auth, currentUser => {
             console.log('user ovserving');
@@ -41,6 +51,8 @@ const AuthProvider = ({children}) => {
     const authInfo = {
         createUser,
         signInUser,
+        sendForgetPasswordEmail,
+        loginWithGoogle,
         logOut,
         updateUser,
         user,

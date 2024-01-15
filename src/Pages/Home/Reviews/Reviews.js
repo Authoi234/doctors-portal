@@ -33,7 +33,7 @@ const Reviews = () => {
         <div className='mt-20'>
             <div className='flex justify-between'>
                 <div>
-                    <p className='text-secondary font-bold text-2xl'>Testimonial</p>
+                    <p className='text-emerald-400 font-bold text-2xl'>Testimonial</p>
                     <h1 className='text-4xl'>What Our Patients Says</h1>   
                 </div>
                 <div>
