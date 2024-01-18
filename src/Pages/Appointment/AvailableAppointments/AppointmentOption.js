@@ -2,6 +2,7 @@ import React from 'react';
 
 const AppointmentOption = ({ appointmentOption, setTreatment }) => {
     const { name, slots } = appointmentOption;
+    const disabled = slots.length === 0 ? true : false;
     return (
         <div className="card shadow-xl">
             <div className="card-body text-center">
@@ -10,7 +11,7 @@ const AppointmentOption = ({ appointmentOption, setTreatment }) => {
                 <p>{slots.length} {slots.length > 1 ? 'spaces' : 'space'} Available</p>
                 <div className="card-actions justify-center">
                     <label
-                        disabled={slots.length === 0}
+                        disabled={disabled}
                         htmlFor="booking-modal"
                         className="btn bg-gradient-to-r from-emerald-400 to-teal-300 text-white"
                         onClick={() => setTreatment(appointmentOption)} 

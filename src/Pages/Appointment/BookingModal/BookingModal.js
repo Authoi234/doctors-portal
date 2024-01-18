@@ -14,16 +14,19 @@ const BookingModal = ({treatment, setTreatment, selectedDate}) => {
         const patientName = form.name.value;
         const email = form.email.value;
         const phone = form.phone.value;
-        
+        // [3, 4, 5].map((value, i) => console.log(value)) 
         const booking = {
-            slot,
-            patient: patientName,
-            email,
-            phone,
+            appointmentDate,
             treatment: name,
-            appointmentDate
+            patient: patientName,
+            slot,
+            email,
+            phone
         }
 
+        // TODO : send data to the server
+        // and once data is saved then close the modal
+        // and display success toast
         console.log(booking);
         setTreatment(null);
     }
