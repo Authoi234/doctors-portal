@@ -25,7 +25,6 @@ const SignUp = () => {
                     },
                 });
                 handleUpdateUserProfile(data.name);
-                navigate('/');
             })
             .catch(err => {
                 setError(err);
@@ -37,7 +36,9 @@ const SignUp = () => {
             displayName: name,
         }
         updateUser(profile)
-            .then(() => { })
+            .then(() => {
+                navigate('/');
+             })
             .catch((err) => setError(err))
     }
 
