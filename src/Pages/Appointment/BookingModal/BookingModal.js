@@ -3,7 +3,7 @@ import React, { useContext } from 'react';
 import { AuthContext } from '../../../contexts/AuthProvider';
 import toast from 'react-hot-toast';
 
-const BookingModal = ({ treatment, setTreatment, selectedDate }) => {
+const BookingModal = ({ treatment, setTreatment, selectedDate, refetch }) => {
     const date = format(selectedDate, 'PP');
     const { name, slots } = treatment;
     const { user } = useContext(AuthContext);
@@ -33,7 +33,7 @@ const BookingModal = ({ treatment, setTreatment, selectedDate }) => {
         fetch('http://localhost:5000/bookings', {
             method: 'POST',
             headers: {
-                'content-type': 'application/json'
+                'content-type' : 'application/json'
             },
             body: JSON.stringify(booking)
         })
@@ -43,6 +43,10 @@ const BookingModal = ({ treatment, setTreatment, selectedDate }) => {
                 if (data.acknowledged) {
                     setTreatment(null);
                     toast.success('👨‍⚕️ Booking Confirmed');
+                    refetch();
+                }
+                else{
+                    toast.error( data.message);
                 }
             })
 
@@ -58,7 +62,6 @@ const BookingModal = ({ treatment, setTreatment, selectedDate }) => {
                     <form onSubmit={handleSubmit} className='grid grid-cols-1 gap-3'>
                         <input type="text" value={date} className="input w-full text-black input-bordered" disabled />
                         <select name='slot' className="select select-bordered w-full bg-base-100" required>
-                            <option>Who shot first?</option>
                             {
                                 slots.map((slot, i) => <option value={slot} key={i}>{slot}</option>)
                             }
