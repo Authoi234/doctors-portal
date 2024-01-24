@@ -6,6 +6,10 @@ const Navbar = () => {
     const { user, logOut } = useContext(AuthContext);
     const [theme, setTheme] = useState('light');
 
+    useEffect(() => {
+        localStorage.setItem('theme', setTheme);
+    }, [])
+
     const handleLogOut = () => {
         logOut()
             .then(() => { })

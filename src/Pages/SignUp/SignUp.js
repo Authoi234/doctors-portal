@@ -8,50 +8,59 @@ const SignUp = () => {
 
     const { createUser, updateUser, loginWithGoogle } = useContext(AuthContext);
     const { register, handleSubmit, formState: { errors } } = useForm();
-    const [error, setError] = useState('');
+    const [signupError, setSignUpError] = useState('');
     const navigate = useNavigate();
 
     const handleSignUp = (data) => {
-        setError('')
-        console.log(data);
+        setSignUpError('')
         createUser(data.email, data.password)
             .then(result => {
                 const user = result.user;
-                console.log(user);
-                toast.success('User created Successfully', {
-                    style: {
-                        backgroundColor: 'aquamarine',
-                        color: 'white'
-                    },
-                });
-                handleUpdateUserProfile(data.name);
+                console.log(user)
+                const profile = {
+                    displayName: data.name,
+                }
+                updateUser(profile)
+                    .then(() => {
+                        saveUser(data.name, data.email);
+                    })
+                    .catch((err) => setSignUpError(err))
+
+                toast.success('User created Successfully');
             })
             .catch(err => {
-                setError(err);
+                setSignUpError(err);
             })
-    }
-
-    const handleUpdateUserProfile = (name) => {
-        const profile = {
-            displayName: name,
-        }
-        updateUser(profile)
-            .then(() => {
-                navigate('/');
-             })
-            .catch((err) => setError(err))
     }
 
     const handleGoogleLogin = () => {
-        setError('');
+        setSignUpError('');
 
         loginWithGoogle()
-        .then(result => {
-            const user = result.user;
-            console.log(user);
-            navigate('/');
+            .then(result => {
+                const user = result.user;
+                console.log(user);
+                navigate('/');
+            })
+            .catch(err => setSignUpError(err));
+    }
+
+    const saveUser = (name, email) => {
+        const user = { name, email };
+        console.log(user);
+
+        fetch('http://localhost:5000/users', {
+            method: 'POST',
+            headers: {
+                "content-type": "application/json"
+            },
+            body: JSON.stringify(user)
         })
-        .catch(err => setError(err));
+            .then(res => res.json())
+            .then(data => {
+                console.log('save user', data);
+                navigate('/');
+            })
     }
 
     return (
@@ -95,7 +104,7 @@ const SignUp = () => {
                     </label>
                     <input className='btn btn-neutral w-full my-3' type="submit" />
                     <div>
-                        {error && <p className="text-red-500">{error}</p>}
+                        {signupError && <p className="text-red-500">{signupError}</p>}
                     </div>
                 </form>
                 <p className='my-2 text-sm'>Already Have an Account ? <Link className='text-emerald-400' to={'/login'}>Please Login</Link></p>

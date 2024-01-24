@@ -1,9 +1,20 @@
 import React, { useContext } from 'react';
 import { AuthContext } from '../../../contexts/AuthProvider';
+import { useQuery } from '@tanstack/react-query';
 
 const MyAppointment = () => {
-    const {user} = useContext(AuthContext);
-    const url = `http://localhost:5000/bookings?email=${user?.email}`
+    const { user } = useContext(AuthContext);
+
+    const url = `http://localhost:5000/bookings?email=${user?.email}`;
+
+    const { data: bookings = [] } = useQuery({
+        queryKey: ['bookings', user?.email],
+        queryFn: async () => {
+            const res = await fetch(url);
+            const data = await res.json();
+            return data;
+        }
+    })
 
     return (
         <div>
@@ -14,29 +25,21 @@ const MyAppointment = () => {
                         <tr>
                             <th></th>
                             <th>Name</th>
-                            <th>Job</th>
-                            <th>Favorite Color</th>
+                            <th>Treatment</th>
+                            <th>Date</th>
+                            <th>Time</th>
                         </tr>
                     </thead>
                     <tbody>
-                        <tr className='hover'>
-                            <th>1</th>
-                            <td>Cy Ganderton</td>
-                            <td>Quality Control Specialist</td>
-                            <td>Blue</td>
-                        </tr>
-                        <tr className="hover">
-                            <th>2</th>
-                            <td>Hart Hagerty</td>
-                            <td>Desktop Support Technician</td>
-                            <td>Purple</td>
-                        </tr>
-                        <tr className='hover'>
-                            <th>3</th>
-                            <td>Brice Swyre</td>
-                            <td>Tax Accountant</td>
-                            <td>Red</td>
-                        </tr>
+                        {
+                            bookings.map((booking, i) => <tr className='hover' key={i}>
+                                <th>{i + 1}</th>
+                                <td>{booking.patient}</td>
+                                <td>{booking.treatment}</td>
+                                <td>{booking.appointmentDate}</td>
+                                <td>{booking.slot}</td>
+                            </tr>)
+                        }
                     </tbody>
                 </table>
             </div>
