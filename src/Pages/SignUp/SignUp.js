@@ -3,13 +3,31 @@ import { useForm } from 'react-hook-form';
 import { Link, useNavigate } from 'react-router-dom';
 import { AuthContext } from '../../contexts/AuthProvider';
 import toast from 'react-hot-toast';
+import { FaE, FaEye, FaEyeSlash } from "react-icons/fa6";
+import useToken from '../../hooks/useToken';
 
 const SignUp = () => {
 
     const { createUser, updateUser, loginWithGoogle } = useContext(AuthContext);
     const { register, handleSubmit, formState: { errors } } = useForm();
     const [signupError, setSignUpError] = useState('');
+    const [passwordType, setPasswordType] = useState('password');
+    const [createdUserEmail, setCreatedUserEmail] = useState('');
+    const [token] = useToken(createdUserEmail);
     const navigate = useNavigate();
+
+    if (token) {
+        navigate('/');
+    }
+
+    const handlePasswordShow = () => {
+        if (passwordType === 'password') {
+            setPasswordType('text');
+        }
+        else {
+            setPasswordType('password');
+        }
+    }
 
     const handleSignUp = (data) => {
         setSignUpError('')
@@ -58,8 +76,7 @@ const SignUp = () => {
         })
             .then(res => res.json())
             .then(data => {
-                console.log('save user', data);
-                navigate('/');
+                setCreatedUserEmail(email);
             })
     }
 
@@ -88,18 +105,21 @@ const SignUp = () => {
                     </label>
                     <label className="form-control w-full max-w-xs">
                         <div className="label"><span className="label-text font-semibold">Password</span></div>
-                        <input
-                            className="input input-bordered w-full max-w-xs"
-                            type="password"
-                            {
-                            ...register("password",
+                        <div className='flex items-center'>
+                            <input
+                                className="input input-bordered w-full max-w-xs"
+                                type={passwordType}
                                 {
-                                    required: 'Password is Required',
-                                    minLength: { value: 6, message: "Password must be 6 characters or long." },
-                                    pattern: { value: /(?=.*[A-Z])(?=.*[!@#$&*])(?=.*[0-9])/, message: 'Password must have a uppercase , number and a special characters' }
-                                })
-                            }
-                        />
+                                ...register("password",
+                                    {
+                                        required: 'Password is Required',
+                                        minLength: { value: 6, message: "Password must be 6 characters or long." },
+                                        pattern: { value: /(?=.*[A-Z])(?=.*[!@#$&*])(?=.*[0-9])/, message: 'Password must have a uppercase , number and a special characters' }
+                                    })
+                                }
+                            />
+                            <span className='text-2xl border p-2.5 rounded-r-lg tooltip' data-tip="Password Show/Hide" onClick={handlePasswordShow}>{passwordType === 'text' ? <FaEye></FaEye> : <FaEyeSlash></FaEyeSlash>}</span>
+                        </div>
                         {errors.password && <p className='text-red-500 font-bold'>{errors.password?.message}</p>}
                     </label>
                     <input className='btn btn-neutral w-full my-3' type="submit" />

@@ -10,15 +10,20 @@ const MyAppointment = () => {
     const { data: bookings = [] } = useQuery({
         queryKey: ['bookings', user?.email],
         queryFn: async () => {
-            const res = await fetch(url);
+            const res = await fetch(url, {
+                method: 'GET',
+                headers: {
+                    authorization: `Bearer ${localStorage.getItem('accessToken')}`
+                }
+            });
             const data = await res.json();
             return data;
         }
-    })
+    });
 
     return (
         <div>
-            <h3 className="text-3xl mb-5">My Appointments</h3>
+            <h3 className="text-3xl mb-5 font-semibold">My Appointments</h3>
             <div className="overflow-x-auto">
                 <table className="table w-full">
                     <thead className='bg-base-300'>

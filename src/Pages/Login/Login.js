@@ -3,15 +3,34 @@ import { useForm } from 'react-hook-form';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { AuthContext } from '../../contexts/AuthProvider';
 import toast from 'react-hot-toast';
+import useToken from '../../hooks/useToken';
+import { FaEye, FaEyeSlash } from 'react-icons/fa6';
 
 const Login = () => {
     const { register, formState: { errors }, handleSubmit } = useForm();
     const { signInUser, loginWithGoogle, sendForgetPasswordEmail } = useContext(AuthContext);
     const [loginError, setLoginError] = useState('');
+    const [passwordType, setPasswordType] = useState('password');
+    const [loginUserEmail, setLoginUserEmail] = useState('');
+    const [token] = useToken(loginUserEmail);
     const location = useLocation();
     const navigate = useNavigate();
 
+    const handlePasswordShow = () => {
+        if (passwordType === 'password') {
+            setPasswordType('text');
+        }
+        else {
+            setPasswordType('password');
+        }
+    }
+
     const from = location?.state?.from?.pathname || '/';
+
+    if (token) {
+        navigate(from, { replace: true });
+        toast.success('Successfully Logged In');
+    }
 
     const handleLogin = data => {
         setLoginError('');
@@ -20,8 +39,9 @@ const Login = () => {
             .then(result => {
                 const user = result.user;
                 console.log(user);
-                navigate(from, { replace: true });
-                toast.success('Successfully Logged In');
+                setLoginUserEmail(data.email);
+
+
             })
             .catch((err) => setLoginError(err.message))
     }
@@ -66,12 +86,15 @@ const Login = () => {
                     </label>
                     <label className="form-control w-full max-w-xs">
                         <div className="label"><span className="label-text font-semibold">Password</span></div>
-                        <input
-                            {...register("password", {
-                                required: 'Password is required',
-                                minLength: { value: 6, message: 'Password must be 6 characters or longer' }
-                            })}
-                            className="input input-bordered w-full max-w-xs" type="password" /><span></span>
+                        <div className='flex items-center'>
+                            <input
+                                {...register("password", {
+                                    required: 'Password is required',
+                                    minLength: { value: 6, message: 'Password must be 6 characters or longer' }
+                                })}
+                                className="input input-bordered w-full max-w-xs" type={passwordType} />
+                            <span className='text-2xl border p-2.5 rounded-r-lg tooltip' data-tip="Password Show/Hide" onClick={handlePasswordShow}>{passwordType === 'text' ? <FaEye></FaEye> : <FaEyeSlash></FaEyeSlash>}</span>
+                        </div>
                         <div className="label"><span className="label-text text-xs font-medium cursor-pointer underline" onClick={handleForgetPasswordCall}>Forget Password?</span></div>
                         {errors.password && <p className='text-red-600'>{errors.password?.message}</p>}
                     </label>
@@ -90,7 +113,7 @@ const Login = () => {
                         <div className="modal-action">
                             <form onSubmit={handleResetPassword}>
                                 <div className="text-center">
-                                <input type="email" name='resetPasswordEmail' required placeholder='Please Write Your Email Here' className=' text-emerald-400 input input-bordered mx-4 px-3 py-1 text-lg w-96' />
+                                    <input type="email" name='resetPasswordEmail' required placeholder='Please Write Your Email Here' className=' text-emerald-400 input input-bordered mx-4 px-3 py-1 text-lg w-96' />
                                     <input type='submit' value={'Submit'} className="btn my-2 btn-outline btn-neutral w-96" />
                                 </div>
                             </form>
