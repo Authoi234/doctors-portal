@@ -2,6 +2,7 @@ import { useQuery } from '@tanstack/react-query';
 import React from 'react';
 import { useForm } from 'react-hook-form';
 import Loading from './../../Shared/Loading/Loading';
+import toast from 'react-hot-toast';
 
 const AddDoctor = () => {
     const { register, handleSubmit, formState: { errors } } = useForm();
@@ -30,7 +31,32 @@ const AddDoctor = () => {
         .then(imgData => {
             if (imgData.success) {
                 console.log(imgData.data.url);
+                const doctor = {
+                    name: data.name,
+                    email: data.email,
+                    speciality: data.speciality,
+                    image: imgData.data.url
+                }
+
+                // save doctor information to the database
+                fetch('http://localhost:5000/doctors', {
+                    method: 'POST',
+                    headers: {
+                        'content-type': 'application/json',
+                        authorization: `bearer ${localStorage.getItem('access-token')}`
+                    },
+                    body: JSON.stringify(doctor)
+                })
+                .then(res => res.json())
+                .then(result => {
+                    console.log(result);
+                    toast.success(`👍 Doctor ${data.name} is added successfully 🚑`)
+                })
+
             }
+        })
+        .catch(err => {
+            console.log(err);
         })
     }
 
