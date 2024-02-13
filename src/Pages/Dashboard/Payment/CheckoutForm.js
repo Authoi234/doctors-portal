@@ -2,7 +2,10 @@ import { CardElement, useElements, useStripe } from '@stripe/react-stripe-js';
 import React, { useEffect, useState } from 'react';
 
 const CheckoutForm = ({ booking }) => {
-    const [cardError, setCardError] = useState('')
+    const [cardError, setCardError] = useState('');
+    const [success, setSuccess] = useState('');
+    const [transactionId, setTransactionId] = useState('');
+    const [proccessing, setProccessing] = useState(false);
     const [clientSecret, setClientSecret] = useState("");
     const stripe = useStripe();
     const elements = useElements();
@@ -47,7 +50,8 @@ const CheckoutForm = ({ booking }) => {
         else {
             setCardError('')
         }
-
+        setSuccess('');
+        setProccessing(true)
         const { paymentIntent, error: confirmError } = await stripe.confirmCardPayment(
             clientSecret,
             {
@@ -66,8 +70,12 @@ const CheckoutForm = ({ booking }) => {
             return;
         }
 
-        console.log('payment intent', paymentIntent)
-        
+        if(paymentIntent.status === "succeeded"){
+            setSuccess('Congrats! your payment completed');
+            setTransactionId(paymentIntent.id);
+            // store payment info in db
+        }
+        setProccessing(false)
 
     }
 
@@ -81,20 +89,26 @@ const CheckoutForm = ({ booking }) => {
                                 fontSize: '16px',
                                 color: '#424770',
                                 '::placeholder': {
-                                    color: '#aab7c4',
+                                    color: '#d6c8e7',
                                 },
                             },
                             invalid: {
-                                color: '#9e2146',
+                                color: '#e14d60',
                             },
                         },
                     }}
                 />
-                <button className='btn btn-md mt-4 bg-cyan-400 hover:btn-primary transition-all text-lg' type="submit" disabled={!stripe || !clientSecret}>
+                <button className='btn btn-md mt-4 bg-cyan-400 hover:btn-primary transition-all text-lg' type="submit" disabled={!stripe || !clientSecret || proccessing}>
                     PAY
                 </button>
             </form>
             <p className='font-bold text-lg text-red-500 my-6'>{cardError}</p>
+            {
+                success && <div className='my-4'>
+                    <p className="text-green-500 text-lg font-semibold my-2">{success}</p>
+                    <p className="text-green-500 text-lg font-semibold my-2">Your Transaction Id is: <span className='font-bold text-green-600 my-2'>{transactionId}</span></p>
+                </div>
+            }
         </>
     );
 };

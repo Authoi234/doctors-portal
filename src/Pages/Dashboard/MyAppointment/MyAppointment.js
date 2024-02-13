@@ -34,6 +34,7 @@ const MyAppointment = () => {
                             <th>TREATMENT</th>
                             <th>DATE</th>
                             <th>TIME</th>
+                            <th>PRICE</th>
                             <th>PAYMENT</th>
                         </tr>
                     </thead>
@@ -46,6 +47,7 @@ const MyAppointment = () => {
                                 <td>{booking.treatment}</td>
                                 <td>{booking.appointmentDate}</td>
                                 <td>{booking.slot}</td>
+                                <td>{booking.price && <p className='font-semibold'>${booking.price}</p>}</td>
                                 <td>
                                     {
                                         booking.price && !booking.paid && <Link to={`/dashboard/payment/${booking._id}`}>
