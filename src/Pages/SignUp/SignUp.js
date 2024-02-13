@@ -67,7 +67,7 @@ const SignUp = () => {
         const user = { name, email };
         console.log(user);
 
-        fetch('http://localhost:5000/users', {
+        fetch('https://doctors-portal-server-authoi234s-projects.vercel.app/users', {
             method: 'POST',
             headers: {
                 "content-type": "application/json"
@@ -102,6 +102,7 @@ const SignUp = () => {
                             {...register("email", { required: "Email Address is required" })}
                         />
                         {errors.email && <p className='text-red-500 font-bold'>{errors.email?.message}</p>}
+                        <p className='text-xs text-yellow-500'>⚠ ❗ warning: Please Write your email in lowercase, when write uppercase also will be showed as lowercase, but you need to write lowercard.Otherwise you cant access your data.</p>
                     </label>
                     <label className="form-control w-full max-w-xs">
                         <div className="label"><span className="label-text font-semibold">Password</span></div>

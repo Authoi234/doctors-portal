@@ -15,7 +15,7 @@ const CheckoutForm = ({ booking }) => {
 
     useEffect(() => {
         // Create PaymentIntent as soon as the page loads
-        fetch("http://localhost:5000/create-payment-intent", {
+        fetch("https://doctors-portal-server-authoi234s-projects.vercel.app/create-payment-intent", {
             method: "POST",
             headers: {
                 "Content-Type": "application/json",
@@ -67,12 +67,12 @@ const CheckoutForm = ({ booking }) => {
             }
         )
 
-        if(confirmError){
+        if (confirmError) {
             setCardError(confirmError.message);
             return;
         }
 
-        if(paymentIntent.status === "succeeded"){
+        if (paymentIntent.status === "succeeded") {
             console.log('card info', card)
             // store payment info in db
             const payment = {
@@ -81,23 +81,23 @@ const CheckoutForm = ({ booking }) => {
                 email,
                 bookingId: _id
             }
-            fetch('http://localhost:5000/payments', {
-                method: 'POST', 
+            fetch('https://doctors-portal-server-authoi234s-projects.vercel.app/payments', {
+                method: 'POST',
                 headers: {
-                    "content-type" : "application/json",
+                    "content-type": "application/json",
                     authorization: `bearer ${localStorage.getItem("accessToken")}`
                 },
                 body: JSON.stringify(payment)
             })
-            .then(res => res.json())
-            .then(data => {
-                console.log(data);
-                if(data.insertedId){
-                    setSuccess('Congrats! your payment completed');
-                    setTransactionId(paymentIntent.id);
-                    navigate('/dashboard')
-                }
-            })
+                .then(res => res.json())
+                .then(data => {
+                    console.log(data);
+                    if (data.insertedId) {
+                        setSuccess('Congrats! your payment completed');
+                        setTransactionId(paymentIntent.id);
+                        navigate('/dashboard')
+                    }
+                })
         }
         setProccessing(false)
 
