@@ -48,12 +48,10 @@ const Login = () => {
 
     const handleGoogleLogin = () => {
         setLoginError('');
-
         loginWithGoogle()
             .then(result => {
                 const user = result.user;
-                console.log(user);
-                navigate(from, { replace: true });
+                setLoginUserEmail(user.email);
                 toast.success('Successfully Logged In');
             })
             .catch(err => setLoginError(err));

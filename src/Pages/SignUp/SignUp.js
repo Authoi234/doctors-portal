@@ -30,7 +30,7 @@ const SignUp = () => {
     }
 
     const handleSignUp = (data) => {
-        setSignUpError('')
+        setSignUpError('');
         createUser(data.email, data.password)
             .then(result => {
                 const user = result.user;
@@ -53,12 +53,11 @@ const SignUp = () => {
 
     const handleGoogleLogin = () => {
         setSignUpError('');
-
         loginWithGoogle()
             .then(result => {
                 const user = result.user;
-                console.log(user);
-                navigate('/');
+                saveUser(user.displayName, user.email);
+                toast.success('User created Successfully');
             })
             .catch(err => setSignUpError(err));
     }
