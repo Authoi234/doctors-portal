@@ -42,7 +42,7 @@ const Reviews = () => {
             </div>
             <div className='mt-20 grid lg:grid-cols-3 md:grid-cols-2 sm:grid-cols-1'>
                 {
-                    reviews.map(review => <Review key={review._id} review={review}></Review>)
+                    reviews?.map(review => <Review key={review._id} review={review}></Review>)
                 }
             </div>
         </div>

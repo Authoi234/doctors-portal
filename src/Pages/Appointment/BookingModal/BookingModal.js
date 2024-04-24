@@ -64,7 +64,7 @@ const BookingModal = ({ treatment, setTreatment, selectedDate, refetch }) => {
                         <input type="text" value={date} className="input w-full text-black input-bordered" disabled />
                         <select name='slot' className="select select-bordered w-full bg-base-100" required>
                             {
-                                slots.map((slot, i) => <option value={slot} key={i}>{slot}</option>)
+                                slots?.map((slot, i) => <option value={slot} key={i}>{slot}</option>)
                             }
                         </select>
                         <input name='name' type="text" defaultValue={user?.displayName} disabled required placeholder="Your Name" className="input input-bordered w-full" />

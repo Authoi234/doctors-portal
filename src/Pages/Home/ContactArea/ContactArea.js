@@ -31,7 +31,7 @@ const ContactArea = () => {
     return (
         <div className='sm:grid sm:grid-cols-1 md:flex md:justify-around mt-10'>
             {
-                cardData.map(card => <ContactAreaCard key={card.id} card={card}></ContactAreaCard>)
+                cardData?.map(card => <ContactAreaCard key={card.id} card={card}></ContactAreaCard>)
             }
         </div>
     );

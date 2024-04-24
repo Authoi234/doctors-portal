@@ -49,7 +49,7 @@ const AllUsers = () => {
                 </thead>
                 <tbody>
                     {
-                        users.map((user, i) => <tr className='hover' key={user._id}>
+                        users?.map((user, i) => <tr className='hover' key={user._id}>
                             <th>{i + 1}</th>
                             <td>{user?.name}</td>
                             <td>{user?.email}</td>
